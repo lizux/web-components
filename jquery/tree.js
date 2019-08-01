@@ -1,4 +1,6 @@
-// ��ȡ�����¼��ڵ㣬ִ�е�ǰ�ڵ�Ĳ���
+// 一个支持多层级复选框的树状菜单，支持多选、反选、逆向选择等逻辑判断，依赖jQuery库
+
+// 获取所有下级节点，执行当前节点的操作
 function toggleChild(obj, isChecked) {
     $(obj).find('input:checkbox').each(function() {
         if (this.checked != isChecked) {
@@ -6,7 +8,7 @@ function toggleChild(obj, isChecked) {
         }
     });
 }
-// ��ѡ�е�ǰ�ڵ㣬���ȡͬ����Ľڵ��б�����ѡ��״̬һ�£���ݹ鸳ֵ�����ڵ㣻��ȡ��ѡ�е�ǰ�ڵ㣬��ݹ鸳ֵ�����ڵ㡣
+// 若选中当前节点，则获取同级别的节点列表，若选中状态一致，则递归赋值父级节点；若取消选中当前节点，则递归赋值父级节点。
 function toggleParent(obj, isChecked) {
     if (obj) {
         var input = $(obj).children('label').find('input:checkbox');
