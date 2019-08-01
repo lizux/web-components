@@ -1,0 +1,26 @@
+progress.upload {
+    height: 7px;
+    background: #dddcdc;
+    border: 0;
+    color: #47c1ad;
+}
+progress.upload span {
+    display: block;
+    height: 100%;
+    background: #47c1ad;
+}
+progress.upload::-webkit-progress-bar {
+    background: #dddcdc;
+}
+progress.upload::-webkit-progress-value {
+    background-color: #47c1ad;
+}
+progress.upload::-moz-progress-bar {
+    background-color: #47c1ad;
+}
+.hoverRemove a {
+    display: none;
+}
+.hoverRemove:hover a {
+    display: block;
+}
