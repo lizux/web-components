@@ -1,4 +1,4 @@
-// nodejs 脚本，可以把 <include src="header.html"> 替换成 src 文件中的内容，用于实现 html template 功能，快速完成静态页面开发
+// nodejs 脚本，可以把 <include src="header.html"> 替换成 src 文件中的内容，用于实现 html template 功能，提高静态页面开发效率
 
 var libFs = require('fs');
 

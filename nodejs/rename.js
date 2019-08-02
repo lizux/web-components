@@ -1,4 +1,4 @@
-// nodejs 脚本，批量重命名指定文件夹下文件
+// nodejs 脚本，批量替换指定文件夹下文件名（连接线 - 转为下划线 _）
 
 let fs = require('fs');
 let src = '../images/product';

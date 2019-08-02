@@ -1,21 +1,29 @@
 <!--
 // 示例：
 <hi-upload :file-list="files" :disabled="uploading" :limit="1" accept=".jpg,.png" :on-remove="handleFileChange" :on-change="handleFileChange">
-    <i class="el-icon-upload"></i>
-    <div>Select or Drop Your File Here</div>
-    <div slot="tip">
-        <p class="upload-tip">请按当前页面的 App 信息进行包文件的上传和检测</p>
-    </div>
+    <p>点击或将文件拖拽到此区域上传</p>
 </hi-upload>
+
+data: function() {
+        return {
+            files: [],
+            uploading: false
+        }
+
+methods: {
+    handleFileChange(file, files) {}
+}
 -->
 
 <template>
     <div class="file-wrap">
         <div :class="['file-box', {'is-active': isDragActive}]" @click="onClick" @dragover="onDragOver" @dragleave="onDragLeave" @drop="onDrop">
             <input type="file" ref="_fileInput" multiple :accept="accept" :disabled="disabled" class="file-input" @change="onDrop" />
-            <slot></slot>
+            <slot>
+                <i class="icon-upload"></i>
+                <div>Select or Drop Your File Here</div>
+            </slot>
         </div>
-        <slot name="tip"></slot>
         <div v-for="(item, index) in allFiles" :key="item.uid" class="file-list" :title="item.name" @click.prevent="removeFile(index)">
             <div class="file">
                 <img v-if="item.url" :src="item.url" class="icon" @load="onLoad($event)" />
@@ -169,7 +177,7 @@ export default {
 <style lang="less" scoped>
 .file-box {
     display: inline-block;
-    width: 360px;
+    width: 100%;
     height: 100px;
     border: 1px dashed #ccc;
     text-align: center;
@@ -182,10 +190,13 @@ export default {
     border: 2px dashed #409eff;
     background: rgba(32, 159, 255, 0.06);
 }
-.file-box .el-icon-upload {
-    margin: 0 0 8px;
-    color: #c0c4cc;
-    font-size: 66px;
+.file-box .icon-upload {
+    display: block;
+    width: 40px;
+    height: 40px;
+    margin: 10px auto;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='none' d='M0 0h24v24H0z'/%3E%3Cpath d='M1 14.5a6.496 6.496 0 0 1 3.064-5.519 8.001 8.001 0 0 1 15.872 0 6.5 6.5 0 0 1-2.936 12L7 21c-3.356-.274-6-3.078-6-6.5zm15.848 4.487a4.5 4.5 0 0 0 2.03-8.309l-.807-.503-.12-.942a6.001 6.001 0 0 0-11.903 0l-.12.942-.805.503a4.5 4.5 0 0 0 2.029 8.309l.173.013h9.35l.173-.013zM13 13v4h-2v-4H8l4-5 4 5h-3z'/%3E%3C/svg%3E")
+        no-repeat center/100%;
 }
 .file-list {
     position: relative;
@@ -202,6 +213,8 @@ export default {
     line-height: 20px;
 }
 .file-list .icon {
+    width: 2em;
+    height: 2em;
     vertical-align: middle;
 }
 .file-list .text {
@@ -216,7 +229,7 @@ export default {
     position: absolute;
     top: 0;
     right: 5px;
-    font-size: 20px;
+    font-size: 2em;
 }
 .file-list:hover .action {
     display: block;
