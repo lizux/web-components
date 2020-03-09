@@ -10,6 +10,7 @@ var libUrl = require('url'); //URL解析模块
 var libFs = require('fs'); //文件系统模块
 var libPath = require('path'); //路径解析模块
 var port = process.env.PORT || 8080;
+var ip = '0.0.0.0';
 var httpProxy = require('http-proxy').createProxyServer({secure: false});
 
 //依据路径获取返回内容类型字符串,用于http返回头
@@ -108,7 +109,7 @@ WebServer.on('error', function(error) {
 });
 
 //开始侦听端口
-WebServer.listen(port, function() {
+WebServer.listen(port, ip, function() {
     //向控制台输出服务启动的信息
     console.log('[WebServer][Start] running at http://127.0.0.1:%s', port);
     //结束服务启动计时器并输出

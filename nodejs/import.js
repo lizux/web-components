@@ -2,12 +2,11 @@
 
 var libFs = require('fs');
 
-// 待处理路径设置
-var target = 'src';
-var fromPath = target + '/';
-var toPath = 'page/';
-var homePage = 'index.html';
-// 需要指定编码方式，否则返回原生buffer
+// 相关参数设置
+var sourceFolder = 'src';
+var buildFolder = 'build';
+var subPath = 'page';
+var homePage = ['index.html'];
 var encode = {
     encoding: 'utf8'
 };
@@ -27,7 +26,8 @@ var fileImport = function(src, filename) {
         // dataReplace = dataReplace.replace(/"\.\.\//g, '"');
 
         // 生成新的HTML文件
-        var fullPath = filename === homePage ? filename : toPath + filename;
+        var toPath = homePage.indexOf(filename) > -1 ? '' : subPath + '/';
+        var fullPath = buildFolder + '/' + toPath + filename;
         libFs.writeFile(fullPath, dataReplace, encode, function(err) {
             if (!err) {
                 console.log(filename + '生成成功！');
@@ -37,17 +37,31 @@ var fileImport = function(src, filename) {
 };
 
 // 初始化运行
-libFs.readdir(target, function(err, files) {
+libFs.readdir(sourceFolder, function(err, files) {
     if (err) {
         return;
     }
     files.forEach(function(filename) {
-        fileImport(fromPath, filename);
-        // 监控文件，变更后重新生成
-        libFs.watch(fromPath + filename, function(event, filename) {
-            if (event === 'change') {
-                console.log(fromPath + filename + '改变，重新生成...');
+        var filedir = libPath.join(sourceFolder, filename);
+        libFs.stat(filedir, function(err, stats) {
+            if (err) {
+                return;
+            }
+            var isFile = stats.isFile();
+            var isDir = stats.isDirectory();
+            // 使用文件夹判断，避免处理 include 文件夹
+            if (isFile) {
+                var fromPath = sourceFolder + '/';
                 fileImport(fromPath, filename);
+                libFs.watch(fromPath + filename, function(event, filename) {
+                    if (event === 'change') {
+                        console.log(fromPath + filename + '改变，重新生成...');
+                        fileImport(fromPath, filename);
+                    }
+                });
+            }
+            if (isDir) {
+                console.log('folder == ', filename);
             }
         });
     });

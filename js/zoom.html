@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <title>zoom</title>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.3/TweenMax.min.js"></script>
+        <style>
+            html,
+            body {
+                height: 100%;
+            }
+
+            body {
+                box-sizing: border-box;
+                overflow-x: hidden;
+                background: #f1f1f1;
+            }
+
+            main {
+                height: 100%;
+            }
+
+            .tile-container {
+                position: absolute;
+                top: 275px;
+                right: 0;
+                left: 0;
+                text-align: center;
+                user-select: none;
+            }
+
+            .tile {
+                width: 200px;
+                height: 200px;
+                margin: 4px;
+                border-radius: 20px;
+                cursor: pointer;
+                display: inline-block;
+            }
+
+            .page-container {
+                visibility: hidden;
+            }
+
+            .page {
+                cursor: pointer;
+                position: absolute;
+                height: 100vh;
+                width: 100vw;
+                top: 0;
+                left: 0;
+                position: fixed;
+            }
+
+            .hero-1 {
+                background: #f4db33;
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <div class="tile-container">
+                <div class="tile hero-1"></div>
+            </div>
+        </main>
+
+        <div class="page-container">
+            <div class="page hero-1"></div>
+        </div>
+        <script src="zoom.js"></script>
+    </body>
+</html>
