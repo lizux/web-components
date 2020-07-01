@@ -1,4 +1,4 @@
-// Nodejs 脚本，简洁版 web server，还支持 api 反向代理，解决跨越请求问题；同时实现了根据页面模板 include 公共模块并自动生成静态页面
+// Nodejs 脚本，简洁版 web server，还支持 api 反向代理，解决跨越请求问题
 
 //开始服务启动计时器
 console.time('[WebServer][Start]');
@@ -119,62 +119,4 @@ WebServer.listen(port, ip, function () {
 // 指定服务器错误事件响应
 WebServer.on('error', function (error) {
     console.log(error);
-});
-
-
-// 解析模板 include 引入公共组件并生成静态页面
-let sourceFolder = 'src'; // 源目录，放置模板
-let buildFolder = baseFolder; // 构建根目录，放置生成页面
-let subPath = 'page'; // 构建子目录，放置非目录页的其他页
-let homePage = ['index.html', 'index_cn.html']; // 目录页（除此之外的文件都会当做其他页放入子目录）
-let encode = {
-    encoding: 'utf8'
-};
-
-let fileImport = function(src, filename) {
-    libFs.readFile(src + filename, encode, function(err, data) {
-        if (err) {
-            return;
-        }
-        let dataReplace = data.replace(/<include\ssrc="(.*)"><\/include>/gi, function(matchs, path) {
-            return libFs.readFileSync(src + path, encode);
-        });
-
-        let toPath = homePage.indexOf(filename) > -1 ? '' : subPath + '/';
-        let fullPath = buildFolder + '/' + toPath + filename;
-        libFs.writeFile(fullPath, dataReplace, encode, function(err) {
-            if (!err) {
-                console.log(filename + '生成成功！');
-            }
-        });
-    });
-};
-
-libFs.readdir(sourceFolder, function(err, files) {
-    if (err) {
-        return;
-    }
-    files.forEach(function(filename) {
-        let filedir = libPath.join(sourceFolder, filename);
-        libFs.stat(filedir, function(err, stats) {
-            if (err) {
-                return;
-            }
-            let isFile = stats.isFile();
-            let isDir = stats.isDirectory();
-            if (isFile) {
-                let fromPath = sourceFolder + '/';
-                fileImport(fromPath, filename);
-                libFs.watch(fromPath + filename, function(event, filename) {
-                    if (event === 'change') {
-                        console.log(fromPath + filename + '改变，重新生成...');
-                        fileImport(fromPath, filename);
-                    }
-                });
-            }
-            if (isDir) {
-                console.log('folder == ', filename);
-            }
-        });
-    });
 });
