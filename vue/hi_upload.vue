@@ -126,13 +126,13 @@ export default {
                     }
                     this.count++;
                     let reader = new FileReader();
-                    reader.onloadend = () => {
+                    reader.onloadend = (evt) => {
                         let preview = '';
                         if (this.checkImage(item)) {
                             // 使用该方法时，记得释放内存 revokeObjectURL
                             preview = window.URL.createObjectURL(item);
                             // 当使用 readAsDataURL 时以下方法也可以实现预览
-                            // preview = reader.result;
+                            // preview = evt.target.result;
                         }
                         this.allFiles.push({
                             name: item.name,
@@ -145,7 +145,7 @@ export default {
                         });
                         this.onChange(item, this.allFiles);
                     };
-                    reader.readAsArrayBuffer(item);
+                    reader.readAsDataURL(item);
                 }
             });
         },

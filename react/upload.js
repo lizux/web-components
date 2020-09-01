@@ -172,7 +172,7 @@ export default class FileUpload extends React.Component {
                 }
                 this.count++;
                 let reader = new FileReader();
-                reader.onloadend = () => {
+                reader.onloadend = (evt) => {
                     this.setState({
                         files: [
                             ...this.state.files,
@@ -185,7 +185,7 @@ export default class FileUpload extends React.Component {
                         thumbnails: [
                             ...this.state.thumbnails, {
                                 url: checkimg
-                                    ? reader.result
+                                    ? evt.target.result
                                     : fileicon,
                                 name: item.name
                             }
