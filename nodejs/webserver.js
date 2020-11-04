@@ -8,6 +8,7 @@ const libHttp = require('http'); // HTTP协议模块
 const libUrl = require('url'); // URL解析模块
 const libFs = require('fs'); // 文件系统模块
 const libPath = require('path'); // 路径解析模块
+const libOpen = require('open'); // 在浏览器打开网址模块
 const httpProxy = require('http-proxy').createProxyServer({secure: false});
 
 let port = process.env.PORT || 8080;
@@ -53,7 +54,6 @@ let getContType = function (filePath) {
 // Web服务器主函数,解析请求,返回Web内容
 let runServer = function (req, res) {
     let reqUrl = req.url;
-    // 向控制台输出请求的路径
     console.log('request:' + reqUrl);
     // 使用url解析模块获取url中的路径名
     let pathName = libUrl.parse(reqUrl).pathname;
@@ -114,6 +114,7 @@ WebServer.listen(port, ip, function () {
     console.log('[WebServer][Start] running at http://127.0.0.1:%s', port);
     // 结束服务启动计时器并输出
     console.timeEnd('[WebServer][Start]');
+    libOpen('http://127.0.0.1:' + port);
 });
 
 // 指定服务器错误事件响应
