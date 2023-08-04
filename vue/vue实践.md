@@ -1,6 +1,6 @@
 # Vue + Element 开发注意事项
 
-## Vue规范
+## Vue 规范
 
 ### 组件属性
 
@@ -68,18 +68,15 @@ name + 's'   ：用于组件的属性，比较简练
 解决方案：
 
 ```javascript
-chainWebpack: config => {
+chainWebpack: (config) => {
     if (process.env.NODE_ENV === 'development') {
-    config
-        .output
-        .filename('[name].[hash].js')
-        .end()
+        config.output.filename('[name].[hash].js').end();
     }
-}
+};
 // 或
 devServer: {
     watchOptions: {
-        poll: true
+        poll: true;
     }
 }
 ```
@@ -163,7 +160,7 @@ created() {
 
 ```javascript
 <el-table-column label="Title">
-    <template slot-scope="scope">
+    <template v-slot:scope>
 -        <record-title :detail-data="scope.row"></record-title>
 +        <record-title :detail-data="scope.row" :key="scope.row.id"></record-title>
     </template>
@@ -173,9 +170,11 @@ created() {
 ### 路由链接尽量通过 name 来设置而非直接对 url 硬编码
 
 ```html
-- <router-link :to="`/global/cloud_services/${scope.row.id}`">链接</router-link>
+-
+<router-link :to="`/global/cloud_services/${scope.row.id}`">链接</router-link>
 
-+ <router-link :to="{name: 'cloudDetail', params: {cloudID: scope.row.id}}">链接</router-link>
++
+<router-link :to="{name: 'cloudDetail', params: {cloudID: scope.row.id}}">链接</router-link>
 ```
 
 ```javascript
@@ -286,10 +285,9 @@ methods: {
 
 ### vue-router 的 beforeRouteUpdate 事件不会在 keepAlive 包裹组件里面触发
 
-解决方法：可以使用 beforeRouteEnter 或 watch 解决（ [参考1](https://github.com/vuejs/vue-router/issues/1875) [参考2](https://github.com/vuejs/vue-router/issues/2255)）
+解决方法：可以使用 beforeRouteEnter 或 watch 解决（ [参考 1](https://github.com/vuejs/vue-router/issues/1875) [参考 2](https://github.com/vuejs/vue-router/issues/2255)）
 
 ## Element UI 技巧
-
 
 ### Carousel 图片轮播组件自定义
 
@@ -318,7 +316,7 @@ setTimeout(() => {
 }, 1000);
 ```
 
-###  使用 tab 组件时要优化性能，避免重复渲染
+### 使用 tab 组件时要优化性能，避免重复渲染
 
 ```javascript
 <el-tab-pane v-for="tabScope in tabList" :key="tabScope.key" :label="tabScope.label" :name="tabScope.key">
@@ -329,6 +327,7 @@ setTimeout(() => {
 ```
 
 ### 表单初始值的问题:
+
 multiselect、 file 类型必须设置初始值为空数组，否则报错
 checkbox 初始值必须为空数组，否则无法实现多选
 
@@ -351,7 +350,7 @@ google_account_name: []
 + <el-form-item label="Role" prop="role_name">
 ```
 
-### 表单控件在某些场景下，仅需要实现 label 显示必填标识，但是又不需要提示校验信息的话（在父级 label 包含多个无label 的表单元素的情况：校验信息一般通过子元素来显示）
+### 表单控件在某些场景下，仅需要实现 label 显示必填标识，但是又不需要提示校验信息的话（在父级 label 包含多个无 label 的表单元素的情况：校验信息一般通过子元素来显示）
 
 ```javascript
 <el-form-item label="父级" prop="parent" :show-message="false">
@@ -383,6 +382,7 @@ onRemove(file) {
 
 目标：要在选择文件而非提交表单时实现限制大小功能
 过程：因为没有 `before-change` 钩子函数，所以只能用 `on-change` 事件，在检测到文件超过限制时，调用 `clearFiles()` 方法
+
 > 注：在 v-for 循环中 upload 组件的 ref 会变成一个数组，而不是单个对象，即使该 ref 值是唯一值，所以需要特别处理 [0] 才能访问
 
 ### upload 组件实现返回信息在 file list 中显示
@@ -429,8 +429,7 @@ if (fileList) {
 
 ### input 组件支持回车事件
 
-Element 的 input 组件没有实现 keyup 事件，所以要监听回车事件必须使用 ` @keyup.native.enter='' ` 形式
-
+Element 的 input 组件没有实现 keyup 事件，所以要监听回车事件必须使用 `@keyup.native.enter=''` 形式
 
 ### multiselect 组件被禁用的选项不能被移除
 
@@ -495,6 +494,7 @@ data: function() {
 ### 在把 vue 向父级传参方式由 传统 改为 $emit 时要注意：
 
 传统方式：
+
 ```
 父组件：
 <package-detail :on-change="updateResult.bind(null, scope)"></package-detail> // 使用 bind 方法按需传入父级参数
@@ -514,7 +514,8 @@ props:{
 this.onChange(result);
 ```
 
-$emit方式：
+$emit 方式：
+
 ```
 父组件：
 <package-detail @on-change="updateResult($event, scope)"></package-detail> // 使用 $event 传入 $emit 事件参数，然后按需传入父级参数
