@@ -332,8 +332,7 @@ multiselect、 file 类型必须设置初始值为空数组，否则报错
 checkbox 初始值必须为空数组，否则无法实现多选
 
 ```javascript
-domains: [],
-google_account_name: []
+domains: [];
 ```
 
 ### 表单静态渲染项也得加 prop 属性，否则校验程序不生效；同时还得设置 rules 属性
