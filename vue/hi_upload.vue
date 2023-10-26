@@ -21,14 +21,14 @@ methods: {
             <input type="file" ref="_fileInput" multiple :accept="accept" :disabled="disabled" class="file-input" @change="onDrop" />
             <slot>
                 <i class="icon-upload"></i>
-                <div>Select or Drop Your File Here</div>
+                <div>Select or drop your file here</div>
             </slot>
         </div>
         <div v-for="(item, index) in allFiles" :key="item.uid" class="file-list" :title="item.name" @click.prevent="removeFile(index)">
             <div class="file">
                 <img v-if="item.url" :src="item.url" class="icon" @load="onLoad($event)" />
                 <i v-else class="el-icon-document"></i>
-                <span class="text">{{item.name}}</span>
+                <span class="text">{{ item.name }}</span>
             </div>
             <a class="action" title="removeFile">&times;</a>
         </div>
@@ -67,17 +67,17 @@ export default {
         }
     },
     computed: {
-        fileType: function() {
+        fileType: function () {
             if (!this.accept) {
                 return [];
             }
-            return this.accept.split(',').map(item => {
+            return this.accept.split(',').map((item) => {
                 return item ? item.split('.')[1] : '';
             });
         }
     },
     watch: {
-        fileList: function(newValue) {
+        fileList: function (newValue) {
             this.allFiles = [...newValue];
         }
     },
@@ -109,13 +109,10 @@ export default {
                 return;
             }
             let fileArr = [].slice.call(files);
-            fileArr.forEach(item => {
+            fileArr.forEach((item) => {
                 let valid = true;
                 if (this.fileType.length) {
-                    let name = item.name
-                        .split('.')
-                        .pop()
-                        .toLowerCase();
+                    let name = item.name.split('.').pop().toLowerCase();
                     if (!this.fileType.includes(name)) {
                         valid = false;
                     }
