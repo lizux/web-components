@@ -11,7 +11,7 @@ const libPath = require('path'); // 路径解析模块
 const libOpen = require('open'); // 在浏览器打开网址模块
 const httpProxy = require('http-proxy').createProxyServer({secure: false});
 
-let port = process.env.PORT || 8080;
+let port = process.env.PORT || 8080; // 可以通过命令行参数传入，如 PORT=1234 node webserver
 let ip = '0.0.0.0';
 let baseFolder = ''; // 允许自定义根目录
 if (process.argv.length > 2) {
