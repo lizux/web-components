@@ -5,7 +5,7 @@ console.time('[WebServer][Start]');
 
 //请求模块
 const libHttp = require('http'); // HTTP协议模块
-const libUrl = require('url'); // URL解析模块
+const {URL} = require('url'); // URL解析模块
 const libFs = require('fs'); // 文件系统模块
 const libPath = require('path'); // 路径解析模块
 const libOpen = require('open'); // 在浏览器打开网址模块
@@ -56,7 +56,9 @@ let runServer = function (req, res) {
     let reqUrl = req.url;
     console.log('request:' + reqUrl);
     // 使用url解析模块获取url中的路径名
-    let pathName = libUrl.parse(reqUrl).pathname;
+    const baseURL = req.protocol + '://' + req.headers.host + '/';
+    const pathName = new URL(reqUrl, baseURL).pathname;
+
     if (pathName.indexOf('/myapi') > -1) {
         console.log('proxy:' + pathName);
         httpProxy.web(req, res, {
